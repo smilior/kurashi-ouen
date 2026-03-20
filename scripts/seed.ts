@@ -11,9 +11,10 @@ async function seed() {
   });
   const db = drizzle(client);
 
-  // Create table
+  // Drop and recreate table
+  await client.execute(`DROP TABLE IF EXISTS shops`);
   await client.execute(`
-    CREATE TABLE IF NOT EXISTS shops (
+    CREATE TABLE shops (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       name_kana TEXT,
@@ -31,8 +32,6 @@ async function seed() {
     )
   `);
 
-  // Clear existing data
-  await client.execute("DELETE FROM shops");
 
   // Read CSV
   const csvPath = resolve(__dirname, "../kameiten.csv");
