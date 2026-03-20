@@ -3,6 +3,8 @@ import { shops } from "@/db/schema";
 import { like, eq, or, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const q = searchParams.get("q") || "";
