@@ -1,0 +1,21 @@
+{
+  "name": "くらし応援 かめいてんガイド",
+  "short_name": "くらし応援",
+  "description": "飛騨高山エリアの加盟店を検索できるガイドアプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8F0",
+  "theme_color": "#FF6B6B",
+  "icons": [
+    {
+      "src": "/icon",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

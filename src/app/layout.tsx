@@ -4,6 +4,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "くらし応援 かめいてんガイド",
   description: "飛騨高山エリアの加盟店を検索できるガイドアプリ",
+  themeColor: "#FF6B6B",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
