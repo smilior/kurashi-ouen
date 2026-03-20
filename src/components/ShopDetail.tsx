@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 
 type Shop = {
   id: number;
@@ -23,8 +22,6 @@ type Props = {
   shop: Shop;
   onBack: () => void;
 };
-
-const MiniMap = dynamic(() => import("./MiniMap"), { ssr: false });
 
 export function ShopDetail({ shop, onBack }: Props) {
   const isAvailable = shop.saruboboStatus === "利用可能";
@@ -125,15 +122,6 @@ export function ShopDetail({ shop, onBack }: Props) {
             </p>
           </div>
         </div>
-
-        {/* Mini map */}
-        {shop.lat && shop.lng && (
-          <div className="mt-4 overflow-hidden rounded-2xl shadow-sm">
-            <div className="h-48 w-full">
-              <MiniMap lat={shop.lat} lng={shop.lng} name={shop.name} />
-            </div>
-          </div>
-        )}
 
         {/* Phone CTA */}
         {shop.phone && (

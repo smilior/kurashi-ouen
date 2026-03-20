@@ -6,7 +6,6 @@ import { ShopDetail } from "@/components/ShopDetail";
 import { SearchBar } from "@/components/SearchBar";
 import { HierarchicalFilter } from "@/components/FilterChips";
 import { ShopList } from "@/components/ShopList";
-import { ShopMap } from "@/components/ShopMap";
 
 type Shop = {
   id: number;
@@ -44,7 +43,7 @@ type HierarchicalArea = {
   towns: string[];
 };
 
-type Tab = "home" | "list" | "map";
+type Tab = "home" | "list";
 
 export default function Home() {
   const [shops, setShops] = useState<Shop[]>([]);
@@ -313,13 +312,6 @@ export default function Home() {
         <ShopList onSelectShop={(shop) => setSelectedShop(shop as Shop)} />
       )}
 
-      {/* === MAP TAB === */}
-      {activeTab === "map" && (
-        <div className="fixed inset-0 bottom-16">
-          <ShopMap filters={filters} />
-        </div>
-      )}
-
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 flex border-t border-[#F0E8D8] bg-white/95 backdrop-blur-xl">
         <button
@@ -343,17 +335,6 @@ export default function Home() {
             <path d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span className="text-[10px] font-semibold">一覧</span>
-        </button>
-        <button
-          onClick={() => setActiveTab("map")}
-          className={`flex flex-1 flex-col items-center gap-1 py-3 transition-colors ${
-            activeTab === "map" ? "text-[#FF6B6B]" : "text-[#8B7355]/50"
-          }`}
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="text-[10px] font-semibold">マップ</span>
         </button>
       </nav>
     </div>
