@@ -1,5 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
+
 type Shop = {
   id: number;
   name: string;
@@ -8,16 +10,21 @@ type Shop = {
   categoryMinor: string | null;
   products: string | null;
   area: string | null;
+  town: string | null;
   zipCode: string | null;
   address: string | null;
   phone: string | null;
   saruboboStatus: string | null;
+  lat: number | null;
+  lng: number | null;
 };
 
 type Props = {
   shop: Shop;
   onBack: () => void;
 };
+
+const MiniMap = dynamic(() => import("./MiniMap"), { ssr: false });
 
 export function ShopDetail({ shop, onBack }: Props) {
   const isAvailable = shop.saruboboStatus === "利用可能";
@@ -100,17 +107,33 @@ export function ShopDetail({ shop, onBack }: Props) {
             所在地
           </div>
           <div className="mt-3 space-y-2">
-            {shop.area && (
-              <span className="inline-block rounded-full bg-[#FF6B6B]/10 px-3 py-1 text-xs font-medium text-[#FF6B6B]">
-                {shop.area}エリア
-              </span>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {shop.area && (
+                <span className="inline-block rounded-full bg-[#FF6B6B]/10 px-3 py-1 text-xs font-medium text-[#FF6B6B]">
+                  {shop.area}エリア
+                </span>
+              )}
+              {shop.town && (
+                <span className="inline-block rounded-full bg-[#FFB347]/10 px-3 py-1 text-xs font-medium text-[#8B6914]">
+                  {shop.town}
+                </span>
+              )}
+            </div>
             <p className="text-base text-[#2D2D2D]">
               {shop.zipCode && <span className="text-[#8B7355]/50">〒{shop.zipCode} </span>}
               {shop.address}
             </p>
           </div>
         </div>
+
+        {/* Mini map */}
+        {shop.lat && shop.lng && (
+          <div className="mt-4 overflow-hidden rounded-2xl shadow-sm">
+            <div className="h-48 w-full">
+              <MiniMap lat={shop.lat} lng={shop.lng} name={shop.name} />
+            </div>
+          </div>
+        )}
 
         {/* Phone CTA */}
         {shop.phone && (

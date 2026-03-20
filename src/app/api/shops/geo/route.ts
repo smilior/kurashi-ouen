@@ -13,13 +13,10 @@ export async function GET(request: NextRequest) {
   const area = searchParams.get("area") || "";
   const town = searchParams.get("town") || "";
   const coin = searchParams.get("coin") || "";
-  const limitParam = searchParams.get("limit") || "";
-  const page = parseInt(searchParams.get("page") || "1");
-  const isAll = limitParam === "all";
-  const limit = isAll ? 10000 : 30;
-  const offset = isAll ? 0 : (page - 1) * limit;
 
-  const conditions = [];
+  const conditions = [
+    sql`${shops.lat} IS NOT NULL AND ${shops.lng} IS NOT NULL`,
+  ];
 
   if (q) {
     conditions.push(
@@ -27,7 +24,7 @@ export async function GET(request: NextRequest) {
         like(shops.name, `%${q}%`),
         like(shops.products, `%${q}%`),
         like(shops.categoryMinor, `%${q}%`)
-      )
+      )!
     );
   }
 
@@ -51,32 +48,25 @@ export async function GET(request: NextRequest) {
     conditions.push(eq(shops.saruboboStatus, "利用可能"));
   }
 
-  const where =
-    conditions.length > 0
-      ? sql`${sql.join(
-          conditions.map((c) => sql`(${c})`),
-          sql` AND `
-        )}`
-      : undefined;
+  const where = sql`${sql.join(
+    conditions.map((c) => sql`(${c})`),
+    sql` AND `
+  )}`;
 
-  const [results, countResult] = await Promise.all([
-    db
-      .select()
-      .from(shops)
-      .where(where)
-      .orderBy(shops.nameKana)
-      .limit(limit)
-      .offset(offset),
-    db
-      .select({ count: sql<number>`count(*)` })
-      .from(shops)
-      .where(where),
-  ]);
+  const results = await db
+    .select({
+      id: shops.id,
+      name: shops.name,
+      categoryMajor: shops.categoryMajor,
+      categoryMinor: shops.categoryMinor,
+      area: shops.area,
+      phone: shops.phone,
+      saruboboStatus: shops.saruboboStatus,
+      lat: shops.lat,
+      lng: shops.lng,
+    })
+    .from(shops)
+    .where(where);
 
-  return NextResponse.json({
-    shops: results,
-    total: countResult[0].count,
-    page: isAll ? 1 : page,
-    totalPages: isAll ? 1 : Math.ceil(countResult[0].count / limit),
-  });
+  return NextResponse.json({ shops: results });
 }

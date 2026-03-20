@@ -21,10 +21,13 @@ async function seed() {
       category_minor TEXT,
       products TEXT,
       area TEXT,
+      town TEXT,
       zip_code TEXT,
       address TEXT,
       phone TEXT,
-      sarubobo_status TEXT
+      sarubobo_status TEXT,
+      lat REAL,
+      lng REAL
     )
   `);
 
